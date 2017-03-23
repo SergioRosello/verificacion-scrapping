@@ -7,12 +7,14 @@ class Scrapper:
 
     # soup = BeautifulSoup(open("guardian.xml"))
     def __init__(self, url):
-        page = urllib2.urlopen(url).read()
-        self.soup = BeautifulSoup(page, "html.parser")
+        hola = 0
 
-    def parse_xml(self):
+
+    def parse_xml(self, url):
         guardar = []
-        for link in self.soup.find_all('item'):
+        page = urllib2.urlopen(url).read()
+        soup = BeautifulSoup(page, "html.parser")
+        for link in soup.find_all('item'):
             for title in link.find_all('title'):
                 guardar.append(title.string)
         return guardar
@@ -28,5 +30,5 @@ class Scrapper:
 if __name__ == '__main__':
     url = 'https://www.theguardian.com/international/rss'
     scrapper = Scrapper(url)
-    output = scrapper.parse_xml()
+    output = scrapper.parse_xml(url)
     scrapper.save_to_file(output)
